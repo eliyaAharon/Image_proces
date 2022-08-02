@@ -11,7 +11,6 @@ import java.net.URL;
 
 public class Manage extends JPanel {
     // fields
-    private static ChromeDriver driver;
     private static int x = 395, y = 20, width = 175, height = 50;
     private static BufferedImage afterFilter;
     private static BufferedImage firstBuffer;
@@ -46,8 +45,9 @@ public class Manage extends JPanel {
         // Main button affect
         nameButton.addActionListener((e -> {
             try {
-
-                String s = "https://instagram.ftlv19-1.fna.fbcdn.net/v/t51.2885-15/295795062_623287322557953_4457508725246154812_n.jpg?stp=dst-jpg_e35_p1080x1080&cb=2d435ae8-ef10543b&_nc_ht=instagram.ftlv19-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=RlUPBz-l3NkAX_INxbX&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NDY4NDU3Njg1MTIwMTA0MA%3D%3D.2-ccb7-5&oh=00_AT-HYAX4TL79thWZMIevQA2Z6mYeld9mwaDv0Nmu2whYPQ&oe=62F13BBB&_nc_sid=30a2ef";
+                String s1 = "https://s2.best-wallpaper.net/wallpaper/iphone/1603/Beautiful-nature-scenery-lake-trees-water-reflection-sun_iphone_640x1136.jpg";
+                String s = "https://p0.pikist.com/photos/100/172/dark-night-sky-stars-galaxy-mountain-landscape-nature-water.jpg";
+                String sd = "https://instagram.ftlv19-1.fna.fbcdn.net/v/t51.2885-15/295795062_623287322557953_4457508725246154812_n.jpg?stp=dst-jpg_e35_p1080x1080&cb=2d435ae8-ef10543b&_nc_ht=instagram.ftlv19-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=RlUPBz-l3NkAX_INxbX&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NDY4NDU3Njg1MTIwMTA0MA%3D%3D.2-ccb7-5&oh=00_AT-HYAX4TL79thWZMIevQA2Z6mYeld9mwaDv0Nmu2whYPQ&oe=62F13BBB&_nc_sid=30a2ef";
                 URL url = new URL(s);
                 // set the buffers
                 firstBuffer = ImageIO.read(url);
@@ -59,7 +59,7 @@ public class Manage extends JPanel {
                 this.add(l);
                 // set the first filter button
                 filter1 = new JButton();
-                createCustomButton(filter1, this.yOfButtons, "Red filter");
+                createCustomButton(filter1, this.yOfButtons, "Color shift");
                 this.add(filter1);
 
                 // set the second filter button
@@ -91,7 +91,8 @@ public class Manage extends JPanel {
                 // buttons effects (all of them )
                 filter1.addActionListener((e1 -> {
                     afterFilter = resize(firstBuffer, new Dimension(350, 500));
-                    red(afterFilter);
+                  //  red(afterFilter);
+                    colorsChange(afterFilter, 6);
                     paint(getGraphics());
                 }));
 
@@ -198,7 +199,11 @@ public class Manage extends JPanel {
                         Color newColor5 = brighter(color5);
                         b.setRGB(x, y, newColor5.getRGB());
                         break;
-
+                    case 6:
+                        Color color6 = new Color(pixel);
+                        Color newColor6 = colorShiftLeft(color6);
+                        b.setRGB(x, y, newColor6.getRGB());
+                        break;
 
                 }
             }
@@ -256,21 +261,30 @@ public class Manage extends JPanel {
     public static Color brighter (Color color) {
 
         int red = color.getRed();
-        if (red < 205){
-            red = red+50;
+        if (red < 210){
+            red = red+45;
         }
 
         int green = color.getGreen();
-        if (green < 205){
-            green = green+50;
+        if (green < 210){
+            green = green+45;
         }
 
         int blue = color.getBlue();
-        if (blue < 205){
-            blue = blue+50;
+        if (blue < 210){
+            blue = blue+45;
         }
 
         Color newColor = new Color(red, green, blue);
+        return newColor;
+    }
+    public static Color colorShiftLeft (Color color) {
+
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+
+        Color newColor = new Color(blue,red, green);
         return newColor;
     }
 }
