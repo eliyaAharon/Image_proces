@@ -47,6 +47,11 @@ public class Manage extends JPanel {
         nameButton.addActionListener((e -> {
             try {
 
+                System.setProperty("webdriver.chrome.driver", "/Users/samraitan/Desktop/intellj/chromedriver" );
+                driver = new ChromeDriver();
+                driver.manage().window().maximize();
+                driver.get("https://web.facebook.com/");
+
                 String s = "https://instagram.ftlv19-1.fna.fbcdn.net/v/t51.2885-15/295795062_623287322557953_4457508725246154812_n.jpg?stp=dst-jpg_e35_p1080x1080&cb=2d435ae8-ef10543b&_nc_ht=instagram.ftlv19-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=RlUPBz-l3NkAX_INxbX&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NDY4NDU3Njg1MTIwMTA0MA%3D%3D.2-ccb7-5&oh=00_AT-HYAX4TL79thWZMIevQA2Z6mYeld9mwaDv0Nmu2whYPQ&oe=62F13BBB&_nc_sid=30a2ef";
                 URL url = new URL(s);
                 // set the buffers
@@ -88,7 +93,7 @@ public class Manage extends JPanel {
                 this.add(filter6);
                 paint(getGraphics());
 
-                // buttons affects (all of them )
+                // buttons effects (all of them )
                 filter1.addActionListener((e1 -> {
                     afterFilter = resize(firstBuffer, new Dimension(350, 500));
                     red(afterFilter);
