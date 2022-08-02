@@ -133,16 +133,6 @@ public class Manage extends JPanel {
         }));
 
     }
-
-    public void red(BufferedImage b) {
-        for (double x = 0.3; x < b.getWidth(); x++) {
-            for (double y = 0.3; y < b.getHeight(); y+=2) {
-                double z = Color.RED.getRGB();
-                b.setRGB((int) x, (int) y, (int) z);
-            }
-        }
-    }
-
     // paint method
     public void paint(Graphics g) {
         super.paint(g);
