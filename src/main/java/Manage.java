@@ -4,6 +4,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Manage extends JPanel {
@@ -43,7 +46,8 @@ public class Manage extends JPanel {
         // Main button affect
         nameButton.addActionListener((e -> {
             try {
-                String s = "https://dalicanvas.co.il/wp-content/uploads/2020/02/%D7%A9%D7%A7%D7%99%D7%A2%D7%94-%D7%A7%D7%9C%D7%90%D7%A1%D7%99%D7%AA-1.jpg";
+
+                String s = "https://instagram.ftlv19-1.fna.fbcdn.net/v/t51.2885-15/295795062_623287322557953_4457508725246154812_n.jpg?stp=dst-jpg_e35_p1080x1080&cb=2d435ae8-ef10543b&_nc_ht=instagram.ftlv19-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=RlUPBz-l3NkAX_INxbX&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NDY4NDU3Njg1MTIwMTA0MA%3D%3D.2-ccb7-5&oh=00_AT-HYAX4TL79thWZMIevQA2Z6mYeld9mwaDv0Nmu2whYPQ&oe=62F13BBB&_nc_sid=30a2ef";
                 URL url = new URL(s);
                 // set the buffers
                 firstBuffer = ImageIO.read(url);
@@ -55,27 +59,27 @@ public class Manage extends JPanel {
                 this.add(l);
                 // set the first filter button
                 filter1 = new JButton();
-                createCustomButton(filter1, this.yOfButtons, "first filter");
+                createCustomButton(filter1, this.yOfButtons, "Red filter");
                 this.add(filter1);
 
                 // set the second filter button
                 filter2 = new JButton();
-                createCustomButton(filter2, this.yOfButtons + 90, "second filter");
+                createCustomButton(filter2, this.yOfButtons + 90, "Black & White");
                 this.add(filter2);
 
                 // set the third filter button
                 filter3 = new JButton();
-                createCustomButton(filter3, filter2.getY() + 90, "third filter");
+                createCustomButton(filter3, filter2.getY() + 90, "Inverted color");
                 this.add(filter3);
 
                 // set the fourth filter button
                 filter4 = new JButton();
-                createCustomButton(filter4, filter3.getY() + 90, "forth filter");
+                createCustomButton(filter4, filter3.getY() + 90, "Mirror 🤬 ");
                 this.add(filter4);
 
                 // set the fifth filter button
                 filter5 = new JButton();
-                createCustomButton(filter5, filter4.getY() + 90, "fifth filter");
+                createCustomButton(filter5, filter4.getY() + 90, "Golden warm");
                 this.add(filter5);
 
                 // set the sixth filter button
@@ -86,24 +90,34 @@ public class Manage extends JPanel {
 
                 // buttons affects (all of them )
                 filter1.addActionListener((e1 -> {
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
                     red(afterFilter);
                     paint(getGraphics());
                 }));
 
                 filter2.addActionListener((e1 -> {
-
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    colorsChange(afterFilter, 1);
+                    paint(getGraphics());
                 }));
 
                 filter3.addActionListener((e1 -> {
-
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    colorsChange(afterFilter, 2);
+                    paint(getGraphics());
                 }));
 
-                filter4.addActionListener((e1 -> {
 
+                filter4.addActionListener((e1 -> {
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    colorsChange(afterFilter, 3);
+                    paint(getGraphics());
                 }));
 
                 filter5.addActionListener((e1 -> {
-
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    colorsChange(afterFilter, 4);
+                    paint(getGraphics());
                 }));
 
                 filter6.addActionListener((e1 -> {
@@ -118,10 +132,10 @@ public class Manage extends JPanel {
     }
 
     public void red(BufferedImage b) {
-        for (int x = 0; x < b.getWidth(); x++) {
-            for (int y = 0; y < b.getHeight(); y++) {
-                int z = Color.RED.getRGB();
-                b.setRGB(x, y, z);
+        for (double x = 0.3; x < b.getWidth(); x++) {
+            for (double y = 0.3; y < b.getHeight(); y+=2) {
+                double z = Color.RED.getRGB();
+                b.setRGB((int) x, (int) y, (int) z);
             }
         }
     }
@@ -148,8 +162,92 @@ public class Manage extends JPanel {
         button.setBounds(460, y, 175, 50);
         button.setText(tittle);
         button.setFont(buttonFont);
+    }
+
+
+    public static void colorsChange(BufferedImage b, int n) {
+
+        for (int x = 0; x < b.getWidth(); x++) {
+            for (int y = 0; y < b.getHeight(); y++) {
+                int pixel = b.getRGB(x, y);
+
+                switch (n) {
+                    case 1:
+                        Color color = new Color(pixel);
+                        Color newColor = blackAndWhite(color);
+                        b.setRGB(x, y, newColor.getRGB());
+                        break;
+                    case 2:
+                        Color color2 = new Color(pixel);
+                        Color newColor2 = reverseImgColor(color2);
+                        b.setRGB(x, y, newColor2.getRGB());
+                        break;
+                    case 3 :
+                        Color color3 = new Color(pixel);
+                        afterFilter.setRGB(b.getWidth() -x -1 , y,color3.getRGB());
+                        break;
+                    case 4 :
+                        Color color4 = new Color(pixel);
+                        Color newColor4 = warm(color4);
+                        b.setRGB(x, y, newColor4.getRGB());
+
+
+                }
+            }
         }
     }
+
+
+    public static Color blackAndWhite(Color color) {
+        int red = color.getRed();
+        red = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
+
+        int green = color.getGreen();
+        green = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
+
+        int blue = color.getBlue();
+        blue = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
+
+        Color blackWhite = new Color(red, green, blue);
+        return blackWhite;
+    }
+
+    public static Color reverseImgColor(Color color) {
+
+        int red = color.getRed();
+        red = 255 - red;
+
+        int green = color.getGreen();
+        green = 255 - green;
+
+        int blue = color.getBlue();
+        blue = 255 - blue;
+
+        Color newColor = new Color(red, green, blue);
+        return newColor;
+    }
+    public static Color warm (Color color) {
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+
+        int outputRed = (int)((red * 0.393) + (green *0.769) + (blue * 0.189));
+        int outputGreen = (int)((red * 0.349) + (green *0.686) + (blue * 0.168));
+        int outputBlue = (int)((red * 0.272) + (green *0.534) + (blue * 0.131));
+
+        Color warmFilter = new Color(topColor(outputRed,1),topColor(outputGreen,1),topColor(outputBlue,1));
+        return warmFilter;
+    }
+    public static int topColor (int original, double timesBy) {
+        original *= timesBy;
+        if (original > 255) {
+            original = 255;
+        }
+        return original;
+    }
+
+
+}
 
 
 
