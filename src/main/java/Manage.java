@@ -84,7 +84,7 @@ public class Manage extends JPanel {
 
                 // set the sixth filter button
                 filter6 = new JButton();
-                createCustomButton(filter6, filter5.getY() + 90, " sixth  filter");
+                createCustomButton(filter6, filter5.getY() + 90, "Original");
                 this.add(filter6);
                 paint(getGraphics());
 
@@ -121,7 +121,8 @@ public class Manage extends JPanel {
                 }));
 
                 filter6.addActionListener((e1 -> {
-
+                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    paint(getGraphics());
                 }));
 
             } catch (Exception ex) {
