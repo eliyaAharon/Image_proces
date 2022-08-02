@@ -84,7 +84,7 @@ public class Manage extends JPanel {
 
                 // set the sixth filter button
                 filter6 = new JButton();
-                createCustomButton(filter6, filter5.getY() + 90, "Original");
+                createCustomButton(filter6, filter5.getY() + 90, "Brighten");
                 this.add(filter6);
                 paint(getGraphics());
 
@@ -122,6 +122,7 @@ public class Manage extends JPanel {
 
                 filter6.addActionListener((e1 -> {
                     afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    colorsChange(afterFilter, 5);
                     paint(getGraphics());
                 }));
 
@@ -185,12 +186,16 @@ public class Manage extends JPanel {
                         break;
                     case 3 :
                         Color color3 = new Color(pixel);
-                        afterFilter.setRGB(b.getWidth() -x -1 , y,color3.getRGB());
+                        b.setRGB(firstBuffer.getWidth() -x -1 , y,color3.getRGB());
                         break;
                     case 4 :
                         Color color4 = new Color(pixel);
                         Color newColor4 = warm(color4);
                         b.setRGB(x, y, newColor4.getRGB());
+                    case 5:
+                        Color color5 = new Color(pixel);
+                        Color newColor5 = brighter(color5);
+                        b.setRGB(x, y, newColor5.getRGB());
 
 
                 }
@@ -246,8 +251,26 @@ public class Manage extends JPanel {
         }
         return original;
     }
+    public static Color brighter (Color color) {
 
+        int red = color.getRed();
+        if (red < 205){
+            red = red+50;
+        }
 
+        int green = color.getGreen();
+        if (green < 205){
+            green = green+50;
+        }
+
+        int blue = color.getBlue();
+        if (blue < 205){
+            blue = blue+50;
+        }
+
+        Color newColor = new Color(red, green, blue);
+        return newColor;
+    }
 }
 
 
