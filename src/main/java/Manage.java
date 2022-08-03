@@ -1,3 +1,5 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import javax.imageio.ImageIO;
@@ -12,6 +14,7 @@ import java.net.URL;
 public class Manage extends JPanel {
     // fields
     private static int x = 395, y = 20, width = 175, height = 50;
+    private static ChromeDriver driver;
     private static BufferedImage afterFilter;
     private static BufferedImage firstBuffer;
     private static BufferedImage originalImage;
@@ -33,6 +36,7 @@ public class Manage extends JPanel {
         this.add(name);
         frame.setVisible(true);
 
+
         // Main button setting
         Font buttonFont = new Font("Arial", Font.BOLD, 17);
         JButton nameButton = new JButton("search ");
@@ -41,13 +45,42 @@ public class Manage extends JPanel {
         nameButton.setBounds(this.x + this.width, this.y, this.width - 80, this.height);
         this.add(nameButton);
 
+
+     //   String text = name.getText();
+     //   for (int i = 0; i <text.length() -1; i++) {
+     //       if(text.contains(" s ")){
+     //           text = text.replaceAll("  s ",".");
+     //       }
+     //       System.out.println(text);
+     //   }
+
+
         // Main button affect
+
         nameButton.addActionListener((e -> {
             try {
-                String s1 = "https://s2.best-wallpaper.net/wallpaper/iphone/1603/Beautiful-nature-scenery-lake-trees-water-reflection-sun_iphone_640x1136.jpg";
-                String s = "https://p0.pikist.com/photos/100/172/dark-night-sky-stars-galaxy-mountain-landscape-nature-water.jpg";
-                String sd = "https://instagram.ftlv19-1.fna.fbcdn.net/v/t51.2885-15/295795062_623287322557953_4457508725246154812_n.jpg?stp=dst-jpg_e35_p1080x1080&cb=2d435ae8-ef10543b&_nc_ht=instagram.ftlv19-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=RlUPBz-l3NkAX_INxbX&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NDY4NDU3Njg1MTIwMTA0MA%3D%3D.2-ccb7-5&oh=00_AT-HYAX4TL79thWZMIevQA2Z6mYeld9mwaDv0Nmu2whYPQ&oe=62F13BBB&_nc_sid=30a2ef";
+
+                // facebook interaction
+                System.setProperty("webdriver.chrome.driver", "/Users/samraitan/Documents/intellj/chromedriver" );
+                driver = new ChromeDriver();
+                driver.manage().window().maximize();
+                driver.get("https://web.facebook.com/" + name.getText());
+                driver.manage().window().maximize();
+                String imageUrl;
+
+                if (driver.getPageSource().contains("//*[@id=\"content\"]/div/div/div/div[2]/div/div[1]") || driver.getPageSource().contains("//*[@id=\"content\"]/div/i") ) {
+                    imageUrl = "https://p0.pikist.com/photos/100/172/dark-night-sky-stars-galaxy-mountain-landscape-nature-water.jpg";
+                    driver.close();
+                }else {
+                    java.util.List<WebElement> imgClass = driver.findElements(By.tagName("image"));
+                    WebElement infoLink = imgClass.get(0);
+                    imageUrl = infoLink.getAttribute("xlink:href");
+                    driver.close();
+                }
+
+                String s = imageUrl;
                 URL url = new URL(s);
+
                 // set the buffers
                 firstBuffer = ImageIO.read(url);
                 afterFilter = resize(firstBuffer, new Dimension(350, 500));
