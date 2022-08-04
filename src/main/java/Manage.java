@@ -36,7 +36,6 @@ public class Manage extends JPanel {
         this.add(name);
         frame.setVisible(true);
 
-
         // Main button setting
         Font buttonFont = new Font("Arial", Font.BOLD, 17);
         JButton nameButton = new JButton("search ");
@@ -188,12 +187,10 @@ public class Manage extends JPanel {
                         Color newColor6 = filters.colorShiftLeft(color);
                         b.setRGB(x, y, newColor6.getRGB());
                         break;
-
                 }
             }
         }
     }
-
 }
 
 
