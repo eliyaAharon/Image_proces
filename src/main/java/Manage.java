@@ -15,11 +15,11 @@ public class Manage extends JPanel {
     // fields
     private static int x = 395, y = 20, width = 175, height = 50;
     private static ChromeDriver driver;
-    private static BufferedImage afterFilter;
-    private static BufferedImage firstBuffer;
-    private static BufferedImage originalImage;
+    private static BufferedImage afterFilter, firstBuffer, originalImage;
     private static final int yOfButtons = 90;
     private static JButton filter1, filter2, filter3, filter4, filter5, filter6;
+    private static Filters filters;
+    private static VisualHelpClass visualHelpClass;
 
     // My constructor
     public Manage(int x, int y, int width, int height, JFrame frame) {
@@ -45,33 +45,21 @@ public class Manage extends JPanel {
         nameButton.setBounds(this.x + this.width, this.y, this.width - 80, this.height);
         this.add(nameButton);
 
-
-     //   String text = name.getText();
-     //   for (int i = 0; i <text.length() -1; i++) {
-     //       if(text.contains(" s ")){
-     //           text = text.replaceAll("  s ",".");
-     //       }
-     //       System.out.println(text);
-     //   }
-
-
         // Main button affect
-
         nameButton.addActionListener((e -> {
             try {
-
                 // facebook interaction
-                System.setProperty("webdriver.chrome.driver", "/Users/samraitan/Documents/intellj/chromedriver" );
+                System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
                 driver = new ChromeDriver();
                 driver.manage().window().maximize();
                 driver.get("https://web.facebook.com/" + name.getText());
                 driver.manage().window().maximize();
                 String imageUrl;
 
-                if (driver.getPageSource().contains("//*[@id=\"content\"]/div/div/div/div[2]/div/div[1]") || driver.getPageSource().contains("//*[@id=\"content\"]/div/i") ) {
+                if (driver.getPageSource().contains("//*[@id=\"content\"]/div/div/div/div[2]/div/div[1]") || driver.getPageSource().contains("//*[@id=\"content\"]/div/i")) {
                     imageUrl = "https://p0.pikist.com/photos/100/172/dark-night-sky-stars-galaxy-mountain-landscape-nature-water.jpg";
                     driver.close();
-                }else {
+                } else {
                     java.util.List<WebElement> imgClass = driver.findElements(By.tagName("image"));
                     WebElement infoLink = imgClass.get(0);
                     imageUrl = infoLink.getAttribute("xlink:href");
@@ -81,79 +69,79 @@ public class Manage extends JPanel {
                 String s = imageUrl;
                 URL url = new URL(s);
 
-                // set the buffers
+                // set the buffers && filters object
+                filters = new Filters();
+                visualHelpClass = new VisualHelpClass();
                 firstBuffer = ImageIO.read(url);
-                afterFilter = resize(firstBuffer, new Dimension(350, 500));
-                originalImage = resize(firstBuffer, new Dimension(350, 500));
+                afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                originalImage = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                 JLabel l = new JLabel(new ImageIcon(originalImage));
                 l.setBounds(40, 50, 350, 500);
                 this.add(l);
                 // set the first filter button
                 filter1 = new JButton();
-                createCustomButton(filter1, this.yOfButtons, "Color shift");
+                visualHelpClass.createCustomButton(filter1, this.yOfButtons, "Color shift");
                 this.add(filter1);
 
                 // set the second filter button
                 filter2 = new JButton();
-                createCustomButton(filter2, this.yOfButtons + 90, "Black & White");
+                visualHelpClass.createCustomButton(filter2, this.yOfButtons + 90, "Black & White");
                 this.add(filter2);
 
                 // set the third filter button
                 filter3 = new JButton();
-                createCustomButton(filter3, filter2.getY() + 90, "Inverted color");
+                visualHelpClass.createCustomButton(filter3, filter2.getY() + 90, "Inverted color");
                 this.add(filter3);
 
                 // set the fourth filter button
                 filter4 = new JButton();
-                createCustomButton(filter4, filter3.getY() + 90, "Mirror 🤬 ");
+                visualHelpClass.createCustomButton(filter4, filter3.getY() + 90, "Mirror 🤬 ");
                 this.add(filter4);
 
                 // set the fifth filter button
                 filter5 = new JButton();
-                createCustomButton(filter5, filter4.getY() + 90, "Golden warm");
+                visualHelpClass.createCustomButton(filter5, filter4.getY() + 90, "Golden warm");
                 this.add(filter5);
 
                 // set the sixth filter button
                 filter6 = new JButton();
-                createCustomButton(filter6, filter5.getY() + 90, "Brighten");
+                visualHelpClass.createCustomButton(filter6, filter5.getY() + 90, "Brighten");
                 this.add(filter6);
                 paint(getGraphics());
 
                 // buttons effects (all of them )
                 filter1.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
-                    //  red(afterFilter);
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 6);
                     paint(getGraphics());
                 }));
 
                 filter2.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 1);
                     paint(getGraphics());
                 }));
 
                 filter3.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 2);
                     paint(getGraphics());
                 }));
 
-
                 filter4.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 3);
                     paint(getGraphics());
                 }));
 
                 filter5.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 4);
                     paint(getGraphics());
                 }));
 
                 filter6.addActionListener((e1 -> {
-                    afterFilter = resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 5);
                     paint(getGraphics());
                 }));
@@ -162,7 +150,6 @@ public class Manage extends JPanel {
                 ex.printStackTrace();
             }
         }));
-
     }
 
     // paint method
@@ -171,53 +158,34 @@ public class Manage extends JPanel {
         g.drawImage(afterFilter, 700, 50, null);
     }
 
-    // Resize the bufferImage
-    public BufferedImage resize(BufferedImage image, final Dimension size) {
-        final BufferedImage resized = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-        final Graphics2D g = resized.createGraphics();
-        g.drawImage(image, 0, 0, size.width, size.height, null);
-        g.dispose();
-        return resized;
-    }
-
-    // create custom button
-    public static void createCustomButton(JButton button, int y, String tittle) {
-        Font buttonFont = new Font("Arial", Font.BOLD, 17);
-        button.setBackground(Color.YELLOW);
-        button.setBounds(460, y, 175, 50);
-        button.setText(tittle);
-        button.setFont(buttonFont);
-    }
-
-
+    // main image process method
     public static void colorsChange(BufferedImage b, int n) {
-
         for (int x = 0; x < b.getWidth(); x++) {
             for (int y = 0; y < b.getHeight(); y++) {
                 int pixel = b.getRGB(x, y);
                 Color color = new Color(pixel);
                 switch (n) {
                     case 1:
-                        Color newColor = blackAndWhite(color);
+                        Color newColor = filters.blackAndWhite(color);
                         b.setRGB(x, y, newColor.getRGB());
                         break;
                     case 2:
-                        Color newColor2 = reverseImgColor(color);
+                        Color newColor2 = filters.reverseImgColor(color);
                         b.setRGB(x, y, newColor2.getRGB());
                         break;
                     case 3:
                         b.setRGB(b.getWidth() - x - 1, y, color.getRGB());
                         break;
                     case 4:
-                        Color newColor4 = warm(color);
+                        Color newColor4 = filters.warm(color);
                         b.setRGB(x, y, newColor4.getRGB());
                         break;
                     case 5:
-                        Color newColor5 = brighter(color);
+                        Color newColor5 = filters.brighter((color));
                         b.setRGB(x, y, newColor5.getRGB());
                         break;
                     case 6:
-                        Color newColor6 = colorShiftLeft(color);
+                        Color newColor6 = filters.colorShiftLeft(color);
                         b.setRGB(x, y, newColor6.getRGB());
                         break;
 
@@ -226,87 +194,6 @@ public class Manage extends JPanel {
         }
     }
 
-
-    public static Color blackAndWhite(Color color) {
-        int red = color.getRed();
-        red = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
-
-        int green = color.getGreen();
-        green = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
-
-        int blue = color.getBlue();
-        blue = (color.getRed() + color.getGreen() + color.getBlue()) / 3;
-
-        Color blackWhite = new Color(red, green, blue);
-        return blackWhite;
-    }
-
-    public static Color reverseImgColor(Color color) {
-
-        int red = color.getRed();
-        red = 255 - red;
-
-        int green = color.getGreen();
-        green = 255 - green;
-
-        int blue = color.getBlue();
-        blue = 255 - blue;
-
-        Color newColor = new Color(red, green, blue);
-        return newColor;
-    }
-
-    public static Color warm(Color color) {
-        int red = color.getRed();
-        int green = color.getGreen();
-        int blue = color.getBlue();
-
-        int outputRed = (int) ((red * 0.393) + (green * 0.769) + (blue * 0.189));
-        int outputGreen = (int) ((red * 0.349) + (green * 0.686) + (blue * 0.168));
-        int outputBlue = (int) ((red * 0.272) + (green * 0.534) + (blue * 0.131));
-
-        Color warmFilter = new Color(topColor(outputRed, 1), topColor(outputGreen, 1), topColor(outputBlue, 1));
-        return warmFilter;
-    }
-
-    public static int topColor(int original, double timesBy) {
-        original *= timesBy;
-        if (original > 255) {
-            original = 255;
-        }
-        return original;
-    }
-
-    public static Color brighter(Color color) {
-
-        int red = color.getRed();
-        if (red < 210) {
-            red = red + 45;
-        }
-
-        int green = color.getGreen();
-        if (green < 210) {
-            green = green + 45;
-        }
-
-        int blue = color.getBlue();
-        if (blue < 210) {
-            blue = blue + 45;
-        }
-
-        Color newColor = new Color(red, green, blue);
-        return newColor;
-    }
-
-    public static Color colorShiftLeft(Color color) {
-
-        int red = color.getRed();
-        int green = color.getGreen();
-        int blue = color.getBlue();
-
-        Color newColor = new Color(blue, red, green);
-        return newColor;
-    }
 }
 
 
