@@ -108,7 +108,7 @@ public class Manage extends JPanel {
                 this.add(filter6);
                 paint(getGraphics());
 
-                // buttons effects (all of them )
+                // Button effects (all of them )
                 filter1.addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 6);
