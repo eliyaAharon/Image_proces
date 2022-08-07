@@ -89,6 +89,6 @@ public class Filters {
 
         Color newColor = new Color(red, green, blue);
         return newColor;
-    }
 
+    }
 }
