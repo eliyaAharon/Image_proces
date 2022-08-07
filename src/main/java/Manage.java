@@ -3,6 +3,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,11 +22,14 @@ public class Manage extends JPanel {
     private static JButton filter1, filter2, filter3, filter4, filter5, filter6;
     private static Filters filters;
     private static VisualHelpClass visualHelpClass;
+    private FirstAudio firstAudio;
+    private SecondAudio secondAudio;
 
     // My constructor
-    public Manage(int x, int y, int width, int height, JFrame frame) {
+    public Manage(int x, int y, int width, int height, JFrame frame) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.setBounds(x, y, width, height);
         this.setLayout(null);
+        firstAudio = new FirstAudio();
 
         // My font
         Font myFont = new Font("Arial", Font.BOLD, 20);
@@ -47,6 +52,7 @@ public class Manage extends JPanel {
         // Main button affect
         nameButton.addActionListener((e -> {
             try {
+                firstAudio.stopAudio();
                 // facebook interaction
                 System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
                 driver = new ChromeDriver();
@@ -67,7 +73,6 @@ public class Manage extends JPanel {
 
                 String s = imageUrl;
                 URL url = new URL(s);
-
                 // set the buffers && filters object
                 filters = new Filters();
                 visualHelpClass = new VisualHelpClass();
@@ -107,6 +112,8 @@ public class Manage extends JPanel {
                 visualHelpClass.createCustomButton(filter6, filter5.getY() + 90, "Brighten");
                 this.add(filter6);
                 paint(getGraphics());
+
+                secondAudio = new SecondAudio();
 
                 // Button effects (all of them )
                 filter1.addActionListener((e1 -> {

@@ -2,6 +2,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import javax.imageio.ImageIO;
 import javax.print.DocFlavor;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,11 +17,11 @@ public class Window {
     private static final int WINDOW_WIDTH = 1100;
     private static final int WINDOW_HEIGHT = 650;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Window window = new Window();
     }
 
-    public Window() {
+    public Window() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         // frame setting
         myFrame = new JFrame();
         myFrame.setResizable(false);
