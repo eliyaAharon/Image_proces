@@ -91,7 +91,7 @@ public class Manage extends JPanel {
                 paint(getGraphics());
                 firstAudio = new FirstAudio(audio2) ;
 
-                // Button effects (all of them )
+                // Button effects (all of them)
                 buttons[0].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 6);
