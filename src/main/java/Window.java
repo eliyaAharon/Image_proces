@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Window {
-    private static JFrame myFrame;
+public class Window extends JFrame {
     private static final int WINDOW_WIDTH = 1100;
     private static final int WINDOW_HEIGHT = 650;
 
@@ -23,17 +22,16 @@ public class Window {
 
     public Window() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         // frame setting
-        myFrame = new JFrame();
-        myFrame.setResizable(false);
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myFrame.setLayout(null);
-        myFrame.setTitle("Image process ❤️");
-        myFrame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        myFrame.setLocationRelativeTo(null);
-        myFrame.setBackground(Color.BLACK);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setTitle("Image process ❤ ");
+        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.setLocationRelativeTo(null);
+        this.setBackground(Color.BLACK);
 
-        Manage m = new Manage(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, myFrame);
-        myFrame.add(m);
+        Manage m = new Manage(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, this);
+        this.add(m);
 
     }
 

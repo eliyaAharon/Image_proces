@@ -6,8 +6,8 @@ public class FirstAudio {
 
     private Clip clip;
 
-    public FirstAudio() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        File file = new File("פייסבוק פתיח.wav");
+    public FirstAudio(String str) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        File file = new File(str);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
         clip = AudioSystem.getClip();
         clip.open(audioStream);

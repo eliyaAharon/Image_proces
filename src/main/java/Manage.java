@@ -15,22 +15,21 @@ import java.net.URL;
 
 public class Manage extends JPanel {
     // fields
-    private static int x = 395, y = 20, width = 175, height = 50;
+    private final static int x = 395, y = 20, width = 175, height = 50;
     private static ChromeDriver driver;
     private static BufferedImage afterFilter, firstBuffer, originalImage;
     private static final int yOfButtons = 90;
-    private static JButton filter1, filter2, filter3, filter4, filter5, filter6;
+    private static JButton[] buttons;
     private static Filters filters;
     private static VisualHelpClass visualHelpClass;
     private FirstAudio firstAudio;
-    private SecondAudio secondAudio;
+    private static final String audio1 = "פייסבוק פתיח.wav", audio2 = "פיססבוק סיום.wav";
 
     // My constructor
     public Manage(int x, int y, int width, int height, JFrame frame) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.setBounds(x, y, width, height);
         this.setLayout(null);
-        firstAudio = new FirstAudio();
-
+        firstAudio = new FirstAudio(audio1);
         // My font
         Font myFont = new Font("Arial", Font.BOLD, 20);
 
@@ -57,19 +56,14 @@ public class Manage extends JPanel {
                 System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
                 driver = new ChromeDriver();
                 driver.manage().window().maximize();
-                driver.get("https://web.facebook.com/" + name.getText());
+                driver.get("https://he-il.facebook.com/" + name.getText());
                 driver.manage().window().maximize();
                 String imageUrl;
 
-                if (driver.getPageSource().contains("//*[@id=\"content\"]/div/div/div/div[2]/div/div[1]") || driver.getPageSource().contains("//*[@id=\"content\"]/div/i")) {
-                    imageUrl = "https://p0.pikist.com/photos/100/172/dark-night-sky-stars-galaxy-mountain-landscape-nature-water.jpg";
-                    driver.close();
-                } else {
-                    java.util.List<WebElement> imgClass = driver.findElements(By.tagName("image"));
-                    WebElement infoLink = imgClass.get(0);
-                    imageUrl = infoLink.getAttribute("xlink:href");
-                    driver.close();
-                }
+                java.util.List<WebElement> imgClass = driver.findElements(By.tagName("image"));
+                WebElement infoLink = imgClass.get(0);
+                imageUrl = infoLink.getAttribute("xlink:href");
+                driver.close();
 
                 String s = imageUrl;
                 URL url = new URL(s);
@@ -82,71 +76,53 @@ public class Manage extends JPanel {
                 JLabel l = new JLabel(new ImageIcon(originalImage));
                 l.setBounds(40, 50, 350, 500);
                 this.add(l);
-                // set the first filter button
-                filter1 = new JButton();
-                visualHelpClass.createCustomButton(filter1, this.yOfButtons, "Color shift");
-                this.add(filter1);
-
-                // set the second filter button
-                filter2 = new JButton();
-                visualHelpClass.createCustomButton(filter2, this.yOfButtons + 90, "Black & White");
-                this.add(filter2);
-
-                // set the third filter button
-                filter3 = new JButton();
-                visualHelpClass.createCustomButton(filter3, filter2.getY() + 90, "Inverted color");
-                this.add(filter3);
-
-                // set the fourth filter button
-                filter4 = new JButton();
-                visualHelpClass.createCustomButton(filter4, filter3.getY() + 90, "Mirror 🤬 ");
-                this.add(filter4);
-
-                // set the fifth filter button
-                filter5 = new JButton();
-                visualHelpClass.createCustomButton(filter5, filter4.getY() + 90, "Golden warm");
-                this.add(filter5);
-
-                // set the sixth filter button
-                filter6 = new JButton();
-                visualHelpClass.createCustomButton(filter6, filter5.getY() + 90, "Brighten");
-                this.add(filter6);
+                // set all the buttons filters :
+                buttons = new JButton[6];
+                for (int i = 0; i < buttons.length; i++) {
+                    buttons[i] = new JButton();
+                    this.add(buttons[i]);
+                }
+                visualHelpClass.createCustomButton(buttons[0], this.yOfButtons, "Color shift");
+                visualHelpClass.createCustomButton(buttons[1], this.yOfButtons + 90, "Black & White");
+                visualHelpClass.createCustomButton(buttons[2], buttons[1].getY() + 90, "Inverted color");
+                visualHelpClass.createCustomButton(buttons[3], buttons[2].getY() + 90, "Mirror ");
+                visualHelpClass.createCustomButton(buttons[4], buttons[3].getY() + 90, "Golden warm");
+                visualHelpClass.createCustomButton(buttons[5], buttons[4].getY() + 90, "Brighten");
                 paint(getGraphics());
-
-                secondAudio = new SecondAudio();
+                firstAudio = new FirstAudio(audio2) ;
 
                 // Button effects (all of them )
-                filter1.addActionListener((e1 -> {
+                buttons[0].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 6);
                     paint(getGraphics());
                 }));
 
-                filter2.addActionListener((e1 -> {
+                buttons[1].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 1);
                     paint(getGraphics());
                 }));
 
-                filter3.addActionListener((e1 -> {
+                buttons[2].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 2);
                     paint(getGraphics());
                 }));
 
-                filter4.addActionListener((e1 -> {
+                buttons[3].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 3);
                     paint(getGraphics());
                 }));
 
-                filter5.addActionListener((e1 -> {
+                buttons[4].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 4);
                     paint(getGraphics());
                 }));
 
-                filter6.addActionListener((e1 -> {
+                buttons[5].addActionListener((e1 -> {
                     afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
                     colorsChange(afterFilter, 5);
                     paint(getGraphics());
