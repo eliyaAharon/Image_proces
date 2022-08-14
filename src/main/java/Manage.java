@@ -1,3 +1,4 @@
+import com.google.common.util.concurrent.AtomicDouble;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,7 +16,7 @@ import java.net.URL;
 
 public class Manage extends JPanel {
     // fields
-    private final static int x = 395, y = 20, width = 175, height = 50;
+    private final static int x = 395, y = 20, width = 175, height = 50, dim = 400;
     private static ChromeDriver driver;
     private static BufferedImage afterFilter, firstBuffer, originalImage;
     private static final int yOfButtons = 90;
@@ -47,7 +48,6 @@ public class Manage extends JPanel {
         nameButton.setBackground(Color.YELLOW);
         nameButton.setBounds(this.x + this.width, this.y, this.width - 80, this.height);
         this.add(nameButton);
-
         // Main button affect
         nameButton.addActionListener((e -> {
             try {
@@ -64,17 +64,16 @@ public class Manage extends JPanel {
                 WebElement infoLink = imgClass.get(0);
                 imageUrl = infoLink.getAttribute("xlink:href");
                 driver.close();
-
                 String s = imageUrl;
                 URL url = new URL(s);
                 // set the buffers && filters object
                 filters = new Filters();
                 visualHelpClass = new VisualHelpClass();
                 firstBuffer = ImageIO.read(url);
-                afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
-                originalImage = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
+                originalImage = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                 JLabel l = new JLabel(new ImageIcon(originalImage));
-                l.setBounds(40, 50, 350, 500);
+                l.setBounds(30, 110, dim, dim);
                 this.add(l);
                 // set all the buttons filters :
                 buttons = new JButton[6];
@@ -85,45 +84,52 @@ public class Manage extends JPanel {
                 visualHelpClass.createCustomButton(buttons[0], this.yOfButtons, "Color shift");
                 visualHelpClass.createCustomButton(buttons[1], this.yOfButtons + 90, "Black & White");
                 visualHelpClass.createCustomButton(buttons[2], buttons[1].getY() + 90, "Inverted color");
-                visualHelpClass.createCustomButton(buttons[3], buttons[2].getY() + 90, "Mirror ");
+                visualHelpClass.createCustomButton(buttons[3], buttons[2].getY() + 90, "Cool mirror ");
                 visualHelpClass.createCustomButton(buttons[4], buttons[3].getY() + 90, "Golden warm");
                 visualHelpClass.createCustomButton(buttons[5], buttons[4].getY() + 90, "Brighten");
                 paint(getGraphics());
-                firstAudio = new FirstAudio(audio2) ;
+                firstAudio = new FirstAudio(audio2);
 
+                // labels before && after
+                JLabel beforeLab = new JLabel("Before ");
+                JLabel afterLab = new JLabel("After ");
+                visualHelpClass.createCustomLabel(beforeLab, 120);
+                visualHelpClass.createCustomLabel(afterLab, 780);
+                this.add(beforeLab);
+                this.add(afterLab);
                 // Button effects (all of them)
                 buttons[0].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 6);
                     paint(getGraphics());
                 }));
 
                 buttons[1].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 1);
                     paint(getGraphics());
                 }));
 
                 buttons[2].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 2);
                     paint(getGraphics());
                 }));
 
                 buttons[3].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 3);
                     paint(getGraphics());
                 }));
 
                 buttons[4].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 4);
                     paint(getGraphics());
                 }));
 
                 buttons[5].addActionListener((e1 -> {
-                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(350, 500));
+                    afterFilter = visualHelpClass.resize(firstBuffer, new Dimension(dim, dim));
                     colorsChange(afterFilter, 5);
                     paint(getGraphics());
                 }));
@@ -137,7 +143,7 @@ public class Manage extends JPanel {
     // paint method
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(afterFilter, 700, 50, null);
+        g.drawImage(afterFilter, 660, 110, null);
     }
 
     // main image process method
